@@ -35,10 +35,15 @@ function picking_RandC(name)
 
     R=(Zre.^2 + Zimg.^2)./Zre
     C=Zimg./((2*π.*f).*(Zre.^2 + Zimg.^2))
-    s=plot(f,R,xscale=:log10)
-    v=plot(f,C,xscale=:log10)
+    s=plot(f,R,xscale=:log10,framestyle=:box,right_margin=7*Plots.mm,linewidth=4,
+    formatter=:plain,leg=false,top_margin=5*Plots.mm,xlabel="Frequency (Hz)",
+    ylabel="Resistance (ohm)")
+    v=plot(f,C,xscale=:log10,framestyle=:box,right_margin=7*Plots.mm,linewidth=4,
+    formatter=:plain,leg=false,top_margin=5*Plots.mm,xlabel="Frequency (Hz)",
+    ylabel="Capacitance (F)")
     savefig(s,name*"_R.html")
     savefig(v,name*"_C.html")
 end
 
+plot()
 picking_RandC("rest")
