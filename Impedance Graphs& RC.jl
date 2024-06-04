@@ -23,8 +23,11 @@ function pick_your_poison()
     Phase=df."-Phase (°)"
     Time="Time (s)"
 
-    p=plot_format(f,Z)
-    savefig(p,ff*"_Name.html")
+    p_module=plot_format(f,Z)
+    savefig(p_module,ff*"_Name.html")
+    p_N=plot_format(Zre,Zimg)
+    savefig(p_N,ff*"_Name"*"Nyquist.html")
+
 end
 
 pick_your_poison()
