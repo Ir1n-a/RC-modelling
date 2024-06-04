@@ -11,7 +11,7 @@ function plot_format(x,y)
     top_margin=5*Plots.mm)
 end
 
-function pick_your_poison()
+function pick_your_poison(name)
     ff=pick_file()
     df=CSV.read(ff,DataFrame)
 
@@ -24,10 +24,10 @@ function pick_your_poison()
     Time="Time (s)"
 
     p_module=plot_format(f,Z)
-    savefig(p_module,ff*"_Name.html")
+    savefig(p_module,ff*"_"*name*"Module.html")
     p_N=plot_format(Zre,Zimg)
-    savefig(p_N,ff*"_Name"*"Nyquist.html")
+    savefig(p_N,ff*"_"*name*"Nyquist.html")
 
 end
 
-pick_your_poison()
+pick_your_poison("P130_full_EIS")
