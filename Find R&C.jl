@@ -46,4 +46,4 @@ function picking_RandC(name)
 end
 
 plot()
-picking_RandC("rest")
+picking_RandC("RC ladder")
