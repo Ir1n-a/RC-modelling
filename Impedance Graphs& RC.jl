@@ -151,7 +151,7 @@ function RC_series(df,ix,Zre)
     Z=df."Z (Ω)"
     C=1 ./ (2*π*f .*Zimg)
     d=[]
-    p_N_s = plot(Zre,C,legend=false)
+    p_N_s = plot(midpoints(Zre),diff(C),legend=false)
     #RC_s=(1 ./2*π*f).*(Zre ./ Zimg)
     #plot(midpoints(f),diff(RC_s),legend=false)
     #plot(Zre,Zimg,xscale=:log10,legend=false)
@@ -228,7 +228,9 @@ function difference_et(x, df)
     Zimg=df."-Z'' (Ω)"
     sum(abs2.(Zre.-Zre_t))/length(Zre) + sum(abs2.(Zimg.-Zimg_t))/length(Zimg)
 end
-    
+ff=pick_file()
+df=CSV.read(ff,DataFrame)
+M,I,m,ix=find_maxima_Zimg(df)
 ix,Rs,Rp,C=Parameter_calculation(df,M,I,m,ix)
 p0=Float64.(vcat(Rp,C))
 optimization_function=OptimizationFunction(difference_et,AutoForwardDiff())
