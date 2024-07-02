@@ -64,7 +64,7 @@ end
 function pick_RC()
     fi=pick_file()
     df=CSV.read(fi,DataFrame)
-    mdf = df[df."-Z'' (Ω)".>=0, :]
+    #mdf = df[df."-Z'' (Ω)".>=0, :]
 
     #x,y,Rc=RC_formation(mdf,1000,0.001)
     #savefig(Rc,fi*"_RCtheoretical.html")
