@@ -151,8 +151,8 @@ function Parameter_calculation(df,M,I,m,ix)
         push!(C,1 ./(2*π*f[I[i]].*Rp[i]))
     end
 
-    println("\n","R = ",print_vector(R),"\n","C = ",print_vector(C),"\n","Rs = ",print_vector(Rs),
-    "\n","Rp = ",print_vector(Rp))
+    println("\n","R = ",print_vector(R),"\n","C = ",print_vector(C),"\n",
+    "Rs = ",print_vector(Rs),"\n","Rp = ",print_vector(Rp))
 
     return ix,Rs,Rp,C
 end
@@ -265,3 +265,17 @@ savefig("Result")
 print(Rp,C)
 print(rezz)
 
+ff=pick_file()
+df=CSV.read(ff,DataFrame)
+f=df."Frequency (Hz)"
+#f=collect(0.01:5:10000)
+print(f)
+typeof(f)
+R=1000
+C=0.001
+Rs=14
+x=R ./(1 .+ (2*π*f*R*C).^2) .+ Rs
+y=(2*π*f.*(R.^2)*C) ./ (1 .+ (2*π*f*R*C).^2)
+plot(x,y,xlabel="Zre",ylabel="Zimg",framestyle=:box,legend=false,dpi=360)
+savefig("semicircle")
+ω
