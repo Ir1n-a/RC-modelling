@@ -267,7 +267,13 @@ print(rezz)
 
 ff=pick_file()
 df=CSV.read(ff,DataFrame)
-f=df."Frequency (Hz)"
+xe=df."Z' (Ω)"
+ye=df."-Z'' (Ω)"
+println(ye😂)
+phy=atan.(y,x)
+fr=df."Frequency (Hz)"
+plot(fr,phy,xscale=:log10)
+plot(fr,y./x,xscale=:log10)
 #f=collect(0.01:5:10000)
 print(f)
 typeof(f)
@@ -279,3 +285,70 @@ y=(2*π*f.*(R.^2)*C) ./ (1 .+ (2*π*f*R*C).^2)
 plot(x,y,xlabel="Zre",ylabel="Zimg",framestyle=:box,legend=false,dpi=360)
 savefig("semicircle")
 ω
+
+R=1000
+C=0.0001
+f=collect(0.01:100:20000)
+x=R ./(1 .+ (2*π*f*R*C).^2)
+y=(2*π*f.*(R.^2)*C) ./ (1 .+ (2*π*f*R*C).^2)
+R1=[]
+for i in 1:200
+    push!(R1,1000)
+end
+x1=R1
+y1=1 ./(f .* C)
+plot(x1,y1,xlimits=[900,1005])
+plot()
+ϕ
+j=0
+k=0
+for i in 2:50
+    if ye[i]-ye[i-1]>0
+        println("some found")
+        k=k+1
+    else 
+        println("none found")
+        j=j+1
+    end
+end
+print(j,"  ",k)
+
+plot(x,y,legend=false,dpi=360,xlabel="Zre (Ω)",ylabel="Zimg (Ω)",framestyle=:box,ylims=[0,600])
+savefig("Nyquistth")
+phi=atan.(y,x)
+#y_b=atan(phi)
+plot(f,phi,xscale=:log10)
+savefig("Phase")
+z=sqrt.(x.^2 + y.^2)
+plot(f,z,xscale=:log10,dpi=360,framestyle=:box,xlabel="Frequency (Hz)", ylabel="Z (Ω)",legend=false)
+savefig("Module")
+plot(f,y./x)
+savefig("ok")
+phi=rad2deg.(atan.(2*π*f.*R*C))
+plot(f,phi,xscale=:log10,xticks=[0,10,100,1000,10000,100000,1000000])
+savefig("what")
+plot(z,x)
+plot(z,y)
+
+plot(legend=false,dpi=360,xlabel="Potential (V)",ylabel="Current (mA)",framestyle=:box,xlimits=(-1,1),ylimits=(-0.6,0.6),yticks=[-0.6,-0.4,-0.2,0,0.2,0.4,0.6])
+savefig("CVplotempty")
+V=collect(-1:0.005:1)
+t=collect(1:0.297:120)
+C=0.001
+I=[]
+for i in 1:400
+    I[i]=C*((V[i+1]-V[i])./(t[i+1]-t[i]))
+end
+print(I)
+plot(V,I)
+plot!(V,-I)
+plot(legend=false,dpi=360,xlabel="Time (s)",ylabel="Potential (V)",framestyle=:box,xlimits=(0,40),ylimits=(0,1.2),yticks=[0,0.2,0.4,0.6,0.8,1,1.2])
+savefig("CDplotempty")
+
+t=collect(0:0.05:1000)
+V=0.01*sin.(2*π*0.002 .* t)
+plot(t,V,legend=false,framestyle=:box,ylabel="Potential (V)", xlabel="Time (s)",linewidth=2,dpi=360)
+savefig("sinus")
+V1=0.01*sin.(2*π*0.002 .* t .+ 1.5708)
+plot!(t,V1,linewidth=2,dpi=360)
+savefig("phasediff")
