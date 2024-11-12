@@ -6,8 +6,8 @@ using StatsBase
 using DataInterpolations
 using Optimization
 using PrettyTables
-#plotlyjs()
-gr()
+plotlyjs()
+#gr()
 function plot_format(x,y,sc,xl,yl)
     max=maximum(x)
     min=minimum(x)
@@ -37,10 +37,12 @@ function find_maxima_Zimg(df)
     df = df[df."-Z'' (Ω)".>=0, :]
     Index=df."Index"
     Zimg=df."-Z'' (Ω)"
+    Frequency=df."Frequency (Hz)"
     M=[]
     I=[]
     m=[]
     ix=[]
+    f=[Frequency[1]]
     #print(maximum(Index))
     for i in 2:(length(Index)-1)
         #println(i," ",Zimg[i])
@@ -51,9 +53,11 @@ function find_maxima_Zimg(df)
             if (Zimg[i-1]>Zimg[i]<Zimg[i+1])
                 push!(m,Zimg[i])
                 push!(ix,i)
+                push!(f,Frequency[i])
             end
         end
     end
+    push!(f,Frequency[end])
 
     if (length(M)==1)
     println("Maxima = ",print_vector(M),"\n","Index = ",print_vector(I),"\n")
@@ -73,6 +77,7 @@ function find_maxima_Zimg(df)
     end
 
     #print(m,ix)
+    print(f)
     return M,I,m,ix
 end
 
@@ -223,7 +228,7 @@ Estimate_Parameters()
 
 function Theoretical_Z(Rp,C,df)
     f=df."Frequency (Hz)"
-    Zre_t= Rp[1] ./(1 .+ (2*π*f*Rp[1]*C[1]).^2) .+ Rp[2] ./(1 .+ (2*π*f*Rp[2]*C[2]).^2) .+
+    Zre_t= Rs .+Rp[1] ./(1 .+ (2*π*f*Rp[1]*C[1]).^2) .+ Rp[2] ./(1 .+ (2*π*f*Rp[2]*C[2]).^2) .+
     Rp[3] ./(1 .+ (2*π*f*Rp[3]*C[3]).^2) .+ Rp[4] ./(1 .+ (2*π*f*Rp[4]*C[4]).^2)
 
     Zimg_t= (2*π*f.*(Rp[1].^2)*C[1]) ./ (1 .+ (2*π*f*Rp[1]*C[1]).^2) .+ 
